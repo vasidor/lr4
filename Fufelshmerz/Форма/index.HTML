@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Регистрация</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Введите данные</h1>
+        <form name="registertabl">
+            <label>Имя</label><br />
+            <input type="text"name="Name"/>
+            <br /><br />
+            <label>Возраст</label><br />
+            <input type="number" name="Age"/>
+            <br /><br />
+            <button type="submit" id="submit">
+                Отправить
+            </button>
+        </form>
+        <script>
+            document
+                .getElementById('submit')
+                .addEventListener('click', function (e) {
+                    e.preventDefault();
+                    let registerForm =
+                        document.forms['registertabl'];
+                    let userName =
+                        registerForm.elements['Name']
+                            .value;
+                    let userAge =
+                        registerForm.elements['Age']
+                            .value;
+                    let user = JSON.stringify({
+                        userName: userName,
+                        userAge: userAge,
+                    });
+                    let request = new XMLHttpRequest();
+                    request.open('POST', '/user', true);
+                    request.setRequestHeader(
+                        'Content-Type',
+                        'application/json'
+                    );
+                    request.addEventListener(
+                        'load',
+                        function () {
+                            let receivedUser = JSON.parse(
+                                request.response
+                            );
+                            console.log(
+                                receivedUser.userName,
+                                '-',
+                                receivedUser.userAge
+                            );
+                        }
+                    );
+                    request.send(user);
+                });
+        </script>
+    </body>
+    <html></html>
+</html>
